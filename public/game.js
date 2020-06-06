@@ -30,7 +30,8 @@ function GameBlock(col, row, val) {
     this.gameBlock = document.createElement('div');
     this.gameBlock.innerText = val;
     this.gameBlock.className = 'gameBlock';
-    this.gameBlock.style.translate = 120 * col + 'px ' + 120 * row + 'px';
+    // this.gameBlock.style.translate = 120 * this.col + 'px ' + 120 * this.row + 'px';
+    this.gameBlock.style.transform = 'translate3d(' + 120 * this.col + 'px, ' + 120 * this.row + 'px, 0px)' ;
     gameMap.appendChild(this.gameBlock);
 
     this.bind = function () {
@@ -79,8 +80,10 @@ function GameBlock(col, row, val) {
         this.col > 3 ? this.col = 3 : this.col;
         this.row < 0 ? this.row = 0 : this.row;
         this.row > 3 ? this.row = 3 : this.row;
+        // this.gameBlock.style.translate = 120 * this.col + 'px ' + 120 * this.row + 'px';
+        this.gameBlock.style.transform = 'translate3d(' + 120 * this.col + 'px, ' + 120 * this.row + 'px, 0px)';
 
-        this.gameBlock.style.translate = 120 * this.col + 'px ' + 120 * this.row + 'px';
+
     }
 }
 
