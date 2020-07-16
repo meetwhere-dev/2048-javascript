@@ -200,7 +200,7 @@ function blockMove(block) {
         }
     }
 
-    // 向右移动i
+    // 向右移动
     if (block == 39) {
         let isMove = false;
 
@@ -449,12 +449,64 @@ function blockMove(block) {
     }
 }
 
+let touchSatrtx
+let touchSatrty
+function touchSatrtFunc(e) {
+    //evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等 
+    let touch = e.touches[0]; //获取第一个触点 
+    touchSatrtx = Number(touch.pageX); //页面触点X坐标 
+    touchSatrty = Number(touch.pageY); //页面触点Y坐标 
+}
 
-document.onkeydown = function (e) {
+document.body.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+}, { passive: false });
+
+
+
+function touchEndFunc(e) {
+    //evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等 
+    let touch = e.changedTouches[0]; //获取第一个触点 
+    var touchEndx = Number(touch.pageX); //页面触点X坐标 
+    var touchEndy = Number(touch.pageY); //页面触点Y坐标 
+    //判断往哪边滑动
+
+    if ((Math.abs(touchEndx - touchSatrtx) - Math.abs(touchEndy - touchSatrty)) > 0){
+        if ((touchEndx - touchSatrtx) > 0){
+            blockMove(39);
+        }else{
+            blockMove(37);
+        }
+    }else{
+        if ((touchEndy - touchSatrty) > 0) {
+            blockMove(40);
+            return false
+        } else {
+            blockMove(38);
+        }
+    }
+}
+document.addEventListener('touchstart', touchSatrtFunc, false);
+document.addEventListener('touchend', touchEndFunc, false);
+
+// 节流程序
+function throttle(fn) {
+    let canRun = true;
+    return function(e){
+        if (canRun) {
+            fn(e);
+            canRun = false
+            setTimeout(() => {
+                canRun = true
+            }, 100)
+        }
+    }
+}
+
+document.onkeydown = throttle(function (e) {
     console.log(e)
     switch (e.keyCode) {
         case 37:
-
             blockMove(37);
             return false
         case 38:
@@ -469,7 +521,7 @@ document.onkeydown = function (e) {
         default:
             break;
     }
-}
+})
 
 
 restartGameBtn.onclick = function () {
